@@ -1,10 +1,10 @@
-setwd("~/Gentianella_publication/Filtering_Tests/")
+setwd("~/Gentianella_publication/final_run/")
 library(vcfR)
 library(adegenet)
 
 
 #import data
-calcis <- read.vcfR("populations.snps.vcf")
+calcis <- read.vcfR("reps_maf_0.05_R0.8.vcf")
 SNPs <- vcfR2genlight(calcis)
 
 

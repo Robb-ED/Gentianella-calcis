@@ -74,7 +74,7 @@ HDplot<-function(vcfData){
   return(HDplotTable)
 }
 
-test <- read.vcfR("noreps_maf0.05_R0.8.vcf")
+test <- read.vcfR("noreps_onlygood_R0.8_minaf_0.05allsnps.vcf")
 
 HDplotResults<-HDplot(test)
 

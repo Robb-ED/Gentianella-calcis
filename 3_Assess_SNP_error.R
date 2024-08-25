@@ -4,7 +4,7 @@ library(adegenet)
 
 
 #import data
-calcis <- read.vcfR("reps_maf_0.05_R0.8.vcf")
+calcis <- read.vcfR("reps_whitelist_R_0.8_minmaf_0.05_maxobshet_0.75.vcf")
 SNPs <- vcfR2genlight(calcis)
 
 

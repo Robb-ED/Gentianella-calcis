@@ -1,7 +1,7 @@
 #####Outlier Detection######
 #Following this tutorial https://bcm-uga.github.io/pcadapt/articles/pcadapt.html
 #Set working directory, read in data
-setwd("~/Gentianella_publication/final_run/")
+setwd("~/Gentianella_publication/final_run/dataset3/")
 library(vcfR)
 library(adegenet)
 library(dartR)
@@ -11,10 +11,10 @@ calcis_colours <- c("#EAB64D","#AFC494","#0BB24E","#5c6f9d","deepskyblue","#DA80
                     ,"#90C8AD","orchid4","yellowgreen","#C97E8C","#CBD4C2")
 
 ##Read the files
-ecology <- read.vcfR("noreps_lessthanmean.vcf")
+ecology <- read.vcfR("populations.snps.vcf")
 
 #Population data
-pop.data <- read.table("popmap_morethanmean.txt", sep = "\t", header = TRUE)
+pop.data <- read.table("popmap_lessthan50percentofmean.txt", sep = "\t", header = TRUE)
 
 v_genlight <- vcfR2genlight(ecology)
 pop(v_genlight) <- pop.data$Population
@@ -25,7 +25,7 @@ library(dartR)
 library(pcadapt)
 
 #Set the path to the VCF file
-path <- "~/Gentianella_publication/final_run/noreps_lessthanmean.vcf"
+path <- "~/Gentianella_publication/final_run/dataset3/populations.snps.vcf"
 
 #Read in the file
 v_adapt <- read.pcadapt(path, type = ("vcf"))
@@ -212,3 +212,38 @@ barplot(normal_avgs, las = 2, cex.names = 0.75,
         legend.text = rownames(outlier_avgs),
         args.legend = list(x = "topright",
                            inset = c(-0.2, 0)))
+
+# Investigate Fst of the twi datasets
+library(StAMPP)
+set.seed(28529)
+
+pvaluefst_outliers <- stamppFst(gl_outliers, nboots = 50000, percent = 95.000, nclusters = 3)
+#If you use too few bootstraps, your p values will be small (i.e., 2dp)
+fstmat_outliers <- pvaluefst_outliers$Fsts
+
+#even with over 100,000 boostraps we didn't get P values of greater than 0
+# based on trials using less differentiated groups, we can conclude everything has a P value of at least ~0.00001
+pvals_outliers <- pvaluefst_outliers$Pvalues
+pvals_outliers <- format((pvals_outliers[1-12,1-12]+0.00001), scientific = FALSE)
+
+#apply BF correction for multiple comparisons
+adjusted_outliers <- p.adjust(pvals_outliers, method = "bonferroni")
+adjusted_outliers
+
+pvaluefst_neutrals <- stamppFst(gl_normals, nboots = 50000, percent = 95.000, nclusters = 3)
+#If you use too few bootstraps, your p values will be small (i.e., 2dp)
+fstmat_neutrals <- pvaluefst_neutrals$Fsts
+
+#even with over 100,000 boostraps we didn't get P values of greater than 0
+# based on trials using less differentiated groups, we can conclude everything has a P value of at least ~0.00001
+pvals_neutrals <- pvaluefst_neutrals$Pvalues
+pvals_neutrals <- format((pvals_neutrals[1-12,1-12]+0.00001), scientific = FALSE)
+
+#apply BF correction for multiple comparisons
+adjusted_neutrals <- p.adjust(pvals_neutrals, method = "bonferroni")
+adjusted_neutrals
+
+write.table(fstmat_neutrals, file = "Pairwise_Fst_neutrals.txt", quote = FALSE, sep = "\t")
+write.table(fstmat_outliers, file = "Pairwise_Fst_outliers.txt", quote = FALSE, sep = "\t")
+
+

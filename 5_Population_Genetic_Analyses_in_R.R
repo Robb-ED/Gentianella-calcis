@@ -12,11 +12,11 @@ library(dartR)
 calcis_colours <- c("#EAB64D","#AFC494","#0BB24E","#5c6f9d","deepskyblue","#DA8051","#857E61"
                     ,"#90C8AD","orchid4","yellowgreen","#C97E8C","#CBD4C2")
 #read in VCF file
-calcis <- read.vcfR("noreps_maf_maxhet_noparas_randomSNP.vcf")
+calcis <- read.vcfR("noreps_R0.8_minmaf_0.05_max_obshet0.75_randomSNP_noparas.vcf")
 
 #read in pop data - this will allow us to see if groups match up with a prior expectations
 pop.data <- read.table("popmap_noreps.txt", sep = "\t", header = T)
-#Should have two columns (AccessID and Population)
+
 
 #Create Genlight from the vcfR object and add information to it
 c_genlight <- vcfR2genlight(calcis)
@@ -66,7 +66,9 @@ PCA_axes3_4 <- ggplot(pca_scores, aes(x=PC3, y = PC4)) +
   ggtitle("PCA axes 3 & 4") +
   scale_colour_manual(values = calcis_colours) +
   theme_classic() +
-  theme(legend.position = "right")
+  theme(legend.position = "right") +
+  theme(legend.text=element_text(size=9))
+  
 
 PCA_axes1_2 + PCA_axes3_4
 

@@ -1,5 +1,5 @@
 # Gentianella-calcis
-Presented here are scripts used in data processing and analysiss for "Population genomic data from threatened New Zealand *Gentianella calcis* (Gentianaceae) challenges conservation prioritisation."
+Presented here are scripts used in data processing and analysis for "Population genomic data from threatened New Zealand *Gentianella calcis* (Gentianaceae) challenges conservation prioritisation."
 
 ## *Stacks* parameter trials without replicates
 As per the suggestion of [Paris et al. 2017](https://besjournals.onlinelibrary.wiley.com/doi/10.1111/2041-210X.12775) we performed intial parameter trials in Stacks v2.64 using a representative subset of 12 samples.
